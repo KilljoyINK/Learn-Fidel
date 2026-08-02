@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ፊደል Fidel — Learn to Write Amharic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=Noto+Serif+Ethiopic:wght@400;500;600&family=Noto+Sans+Ethiopic:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F9FA;
+    --card:#FFFFFF;
+    --border:#E5E5E5;
+    --text:#3C3C3C;
+    --text-soft:#777777;
+    --green:#58CC02; --green-d:#46A302;
+    --blue:#1CB0F6; --blue-d:#1899D6;
+    --red:#FF4B4B; --red-d:#EA2B2B;
+    --purple:#CE82FF; --purple-d:#A568CC;
+    --yellow:#FFC800; --yellow-d:#E5B400;
+    --gray:#E5E5E5; --gray-d:#C7C7C7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Nunito', sans-serif;
+    min-height:100vh;
+    padding:20px 14px 60px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overscroll-behavior-y:contain;
+  }
+
+  /* ---- header ---- */
+  header{
+    width:100%;
+    max-width:1040px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .logo{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+  }
+  .logo .am{
+    font-family:"Noto Serif Ethiopic", serif;
+    font-size:30px;
+    color:var(--green);
+  }
+  .logo .en{
+    font-size:24px;
+    color:var(--text);
+  }
+  .progress-wrap{
+    flex:1 1 240px;
+    max-width:360px;
+  }
+  .progress-label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--text-soft);
+    margin-bottom:4px;
+  }
+  .progress-track{
+    height:14px;
+    background:var(--gray);
+    border-radius:999px;
+    overflow:hidden;
+    border:2px solid var(--border);
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--green);
+    border-radius:999px;
+    transition:width .4s ease;
+  }
+  .progress-track.pulse{
+    animation:pulseBar .5s ease;
+  }
+  @keyframes pulseBar{
+    0%{transform:scale(1);}
+    30%{transform:scale(1.06);}
+    100%{transform:scale(1);}
+  }
+
+  .celebrate{
+    max-width:1040px;
+    width:100%;
+    background:var(--yellow);
+    border:2px solid var(--yellow-d);
+    border-radius:16px;
+    padding:12px 18px;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:16px;
+    display:none;
+  }
+  .celebrate.show{display:block;}
+
+  /* ---- layout ---- */
+  main{
+    display:flex;
+    gap:26px;
+    align-items:flex-start;
+    max-width:1040px;
+    width:100%;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .canvas-col{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    flex:1 1 520px;
+    max-width:580px;
+  }
+  .canvas-card{
+    position:relative;
+    width:100%;
+    border:3px solid var(--border);
+    border-radius:22px;
+    background:#FBF9F3;
+    overflow:hidden;
+    touch-action:none;
+    box-shadow:0 4px 0 var(--border);
+  }
+  canvas{
+    display:block;
+    width:100%;
+    height:auto;
+    cursor:crosshair;
+    touch-action:none;
+    -webkit-user-select:none;
+    user-select:none;
+    overscroll-behavior:none;
+  }
+  .btn3d{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    border:none;
+    border-radius:14px;
+    padding:9px 16px;
+    cursor:pointer;
+    color:#fff;
+    background:var(--bg-c, var(--gray));
+    box-shadow:0 4px 0 var(--shadow-c, var(--gray-d));
+    transition:transform .05s, box-shadow .05s;
+    white-space:nowrap;
+  }
+  .btn3d:active{
+    transform:translateY(4px);
+    box-shadow:0 0 0 var(--shadow-c, var(--gray-d));
+  }
+  .btn-blue{ --bg-c:var(--blue); --shadow-c:var(--blue-d); }
+  .btn-red{ --bg-c:var(--red); --shadow-c:var(--red-d); }
+  .btn-purple{ --bg-c:var(--purple); --shadow-c:var(--purple-d); }
+  .btn-gray{ --bg-c:var(--gray); --shadow-c:var(--gray-d); color:var(--text); }
+
+  .canvas-controls{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .canvas-controls .spacer{flex:1;}
+  .stroke-count{
+    font-size:12px;
+    font-weight:700;
+    color:var(--text-soft);
+  }
+
+  .btn-yellow{ --bg-c:var(--yellow); --shadow-c:var(--yellow-d); color:#3C3C3C; }
+
+  .grade-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+  .grade-result{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .grade-stars{
+    font-size:20px;
+    letter-spacing:2px;
+    color:var(--yellow-d);
+  }
+  .grade-message{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--text);
+  }
+
+  .tip-card{
+    width:100%;
+    margin-top:14px;
+    background:#E7F7DA;
+    border:2px solid var(--green);
+    border-radius:16px;
+    padding:12px 16px;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:13.5px;
+    line-height:1.5;
+    color:#2b4a12;
+  }
+  .tip-card .tip-icon{font-size:18px;flex:0 0 auto;}
+  .tip-card .tip-badge{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.04em;
+    color:var(--green-d);
+    display:block;
+    margin-bottom:2px;
+  }
+  .word-example{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed #b9dc9a;
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .word-example .word-badge{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.04em;
+    color:var(--green-d);
+    flex:0 0 100%;
+    margin-bottom:2px;
+  }
+  .word-example .word-am{
+    font-family:"Noto Serif Ethiopic", serif;
+    font-size:22px;
+    color:#1f3a0d;
+  }
+  .word-example .word-translit{
+    font-style:italic;
+    color:#4c6b34;
+    font-size:13px;
+  }
+  .word-example .word-en{
+    font-weight:800;
+    color:#2b4a12;
+    font-size:13.5px;
+  }
+  .word-example.rare .word-en{
+    font-weight:600;
+    font-style:italic;
+    color:#4c6b34;
+  }
+
+  .replay-note{
+    width:100%;
+    margin-top:8px;
+    font-size:12px;
+    color:var(--text-soft);
+    min-height:1.3em;
+  }
+  .sound-note{
+    width:100%;
+    font-size:11.5px;
+    color:var(--text-soft);
+    min-height:1.3em;
+  }
+
+  /* ---- side panel ---- */
+  .panel{
+    flex:0 0 300px;
+    max-width:300px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .panel-card{
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:18px;
+    padding:16px;
+  }
+  .panel-title{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:var(--text);
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .seg-row{
+    font-size:11px;
+    font-weight:700;
+    color:var(--text-soft);
+    margin:10px 0 6px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  .seg{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .seg button{
+    font-family:'Nunito',sans-serif;
+    font-weight:700;
+    font-size:12px;
+    padding:7px 12px;
+    border-radius:12px;
+    border:2px solid var(--border);
+    background:#fff;
+    color:var(--text-soft);
+    cursor:pointer;
+  }
+  .seg button.active{
+    background:var(--green);
+    border-color:var(--green-d);
+    color:#fff;
+  }
+
+  .settings-toggle{
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--text-soft);
+    cursor:pointer;
+    padding:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .settings-body{
+    display:none;
+    margin-top:12px;
+  }
+  .settings-body.open{display:block;}
+  .control{
+    display:grid;
+    grid-template-columns:70px 1fr 36px;
+    align-items:center;
+    gap:8px;
+    margin-bottom:12px;
+    font-size:11.5px;
+    color:var(--text-soft);
+    font-weight:700;
+  }
+  .control .val{text-align:right;color:var(--text);}
+  input[type=range]{
+    -webkit-appearance:none;
+    appearance:none;
+    width:100%;
+    height:6px;
+    background:var(--gray);
+    border-radius:999px;
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:16px;height:16px;
+    border-radius:50%;
+    background:var(--blue);
+    border:2px solid #fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.3);
+    cursor:pointer;
+    margin-top:-1px;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:16px;height:16px;border-radius:50%;
+    background:var(--blue);border:2px solid #fff;cursor:pointer;
+  }
+
+  /* ---- bottom picker ---- */
+  .bottom{
+    width:100%;
+    max-width:1040px;
+    margin-top:26px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    align-items:center;
+  }
+  .family-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    max-width:760px;
+  }
+  .chip{
+    font-family:"Noto Serif Ethiopic", serif;
+    font-size:19px;
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    border:2px solid var(--border);
+    background:#fff;
+    cursor:pointer;
+    color:var(--text);
+    position:relative;
+  }
+  .chip.active{
+    background:var(--green);
+    border-color:var(--green-d);
+    color:#fff;
+  }
+  .chip.visited::after{
+    content:"";
+    position:absolute;
+    top:-4px; right:-4px;
+    width:9px;height:9px;
+    border-radius:50%;
+    background:var(--yellow);
+    border:2px solid #fff;
+  }
+  .chip.bounce{ animation:chipBounce .4s ease; }
+  @keyframes chipBounce{
+    0%{transform:scale(1);}
+    40%{transform:scale(1.25);}
+    100%{transform:scale(1);}
+  }
+
+  .order-group{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+  }
+  .order-label{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:11px;
+    color:var(--text-soft);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .order-stepper{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+  }
+  .order-stepper button{
+    font-family:"Noto Serif Ethiopic", serif;
+    font-weight:500;
+    font-size:19px;
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    border:2px solid var(--border);
+    background:#fff;
+    color:var(--text-soft);
+    cursor:pointer;
+  }
+  .order-stepper button.active{
+    background:var(--blue);
+    border-color:var(--blue-d);
+    color:#fff;
+  }
+
+  /* ---- mode switch ---- */
+  .mode-switch{
+    display:flex;
+    gap:6px;
+    margin:0 auto 18px;
+    width:100%;
+    max-width:320px;
+    background:#fff;
+    border:2px solid var(--border);
+    border-radius:16px;
+    padding:4px;
+  }
+  .mode-switch button{
+    flex:1;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    padding:9px 0;
+    border:none;
+    border-radius:12px;
+    background:none;
+    color:var(--text-soft);
+    cursor:pointer;
+  }
+  .mode-switch button.active{
+    background:var(--green);
+    color:#fff;
+  }
+
+  /* ---- word picker ---- */
+  .word-picker-label{
+    font-family:'Baloo 2', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    color:var(--text-soft);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .word-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    max-width:820px;
+  }
+  .word-chip{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    min-width:74px;
+    padding:9px 14px;
+    border-radius:14px;
+    border:2px solid var(--border);
+    background:#fff;
+    cursor:pointer;
+    box-shadow:0 3px 0 var(--border);
+    transition:transform .05s, box-shadow .05s;
+  }
+  .word-chip:active{
+    transform:translateY(3px);
+    box-shadow:0 0 0 var(--border);
+  }
+  .word-chip.active{
+    background:var(--blue);
+    border-color:var(--blue-d);
+    box-shadow:0 3px 0 var(--blue-d);
+  }
+  .word-chip.active .wc-am, .word-chip.active .wc-en{ color:#fff; }
+  .word-chip .wc-am{
+    font-family:"Noto Serif Ethiopic", serif;
+    font-size:20px;
+    color:var(--text);
+  }
+  .word-chip .wc-en{
+    font-family:'Nunito', sans-serif;
+    font-size:10.5px;
+    color:var(--text-soft);
+  }
+  #wordBreakdown{
+    font-size:12.5px;
+    color:#4c6b34;
+  }
+  #wordBreakdown .wb-label{
+    font-weight:700;
+    margin-right:4px;
+  }
+
+  @media (max-width:720px){
+    .logo{ max-width:60%; }
+    .logo .am{
+      font-size:22px;
+      overflow-wrap:anywhere;
+    }
+    .logo .en{font-size:18px;}
+    .panel{max-width:100%;flex:1 1 100%;}
+
+    /* bring touch targets closer to the ~44px minimum on small screens */
+    .chip{ width:44px; height:44px; font-size:20px; }
+    .order-stepper button{ width:44px; height:44px; font-size:20px; }
+    .btn3d{ padding:11px 16px; }
+    input[type=range]::-webkit-slider-thumb{ width:20px; height:20px; margin-top:-3px; }
+    input[type=range]::-moz-range-thumb{ width:20px; height:20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span class="am" id="titleGlyph">ቀ</span><span class="en">Fidel</span></div>
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">0 / 34 letter families explored</div>
+    <div class="progress-track" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+</header>
+
+<div class="mode-switch" id="modeSwitch">
+  <button data-v="letters" class="active">🔤 Letters</button>
+  <button data-v="words">📝 Words</button>
+</div>
+
+<div class="celebrate" id="celebrate">🎉 You've explored every letter family — sênbon! Keep practicing to build fluency.</div>
+
+<main>
+  <section class="canvas-col">
+    <div class="canvas-card">
+      <canvas id="inkCanvas"></canvas>
+    </div>
+    <div class="canvas-controls">
+      <button class="btn3d btn-gray" id="undoBtn">undo</button>
+      <button class="btn3d btn-red" id="clearBtn">clear</button>
+      <button class="btn3d btn-blue" id="soundBtn">🔊 hear it</button>
+      <div class="spacer"></div>
+      <button class="btn3d btn-purple" id="replayBtn">↺ replay</button>
+      <span class="stroke-count" id="strokeCount">0 strokes</span>
+    </div>
+
+    <div class="grade-row">
+      <button class="btn3d btn-yellow" id="gradeBtn">⭐ grade my writing</button>
+      <div class="grade-result" id="gradeResult"></div>
+    </div>
+
+    <div class="replay-note" id="hintRow"></div>
+    <div class="sound-note" id="soundStatus"></div>
+
+    <div class="tip-card" id="tipCard">
+      <span class="tip-icon">💡</span>
+      <span>
+        <span class="tip-badge">RECOGNITION TIP</span><span id="tipText"></span>
+        <div class="word-example" id="wordExample"></div>
+      </span>
+    </div>
+
+    <div class="tip-card" id="wordInfoCard" style="display:none;">
+      <span class="tip-icon">📖</span>
+      <span>
+        <span class="tip-badge">MEANING</span><span id="wordMeaningText"></span>
+        <div class="word-example" id="wordBreakdown"></div>
+      </span>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div class="panel-card">
+      <div class="panel-title">📄 paper</div>
+      <div class="seg-row">surface</div>
+      <div class="seg" id="surfaceTabs">
+        <button data-v="plain" class="active">plain</button>
+        <button data-v="grid">grid</button>
+        <button data-v="scroll">scroll</button>
+      </div>
+      <div class="seg-row">mode</div>
+      <div class="seg" id="modeTabs">
+        <button data-v="write" class="active">write</button>
+        <button data-v="trace">trace</button>
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <button class="settings-toggle" id="settingsToggle">
+        <span>🖌️ brush settings</span>
+        <span id="settingsChevron">▾</span>
+      </button>
+      <div class="settings-body" id="settingsBody">
+        <div class="control"><label>weight</label><input type="range" id="weight" min="0" max="1" step="0.01" value="0.55"><span class="val" id="weightVal">0.55</span></div>
+        <div class="control"><label>wetness</label><input type="range" id="wetness" min="0" max="1" step="0.01" value="0.42"><span class="val" id="wetnessVal">0.42</span></div>
+        <div class="control"><label>speed</label><input type="range" id="speed" min="0" max="1" step="0.01" value="0.38"><span class="val" id="speedVal">0.38</span></div>
+        <div class="control"><label>formality</label><input type="range" id="formality" min="0" max="1" step="0.01" value="0.88"><span class="val" id="formalityVal">0.88</span></div>
+        <div class="control"><label>seed</label><input type="range" id="seed" min="1" max="99" step="1" value="7"><span class="val" id="seedVal">7</span></div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div class="bottom" id="letterPicker">
+  <div class="order-group">
+    <div class="order-label">vowel order</div>
+    <div class="order-stepper" id="orderStepper"></div>
+  </div>
+  <div class="family-row" id="familyRow"></div>
+</div>
+
+<div class="bottom" id="wordPicker" style="display:none;">
+  <div class="word-picker-label">tap a word to practice writing it</div>
+  <div class="word-grid" id="wordGrid"></div>
+</div>
+
+<script>
+(function(){
+  // ---------- data ----------
+  var FAMILIES = [
+    {t:"ha", c:"h", f:["ሀ","ሁ","ሂ","ሃ","ሄ","ህ","ሆ"]},
+    {t:"la", c:"l", f:["ለ","ሉ","ሊ","ላ","ሌ","ል","ሎ"]},
+    {t:"hha", c:"h", f:["ሐ","ሑ","ሒ","ሓ","ሔ","ሕ","ሖ"]},
+    {t:"ma", c:"m", f:["መ","ሙ","ሚ","ማ","ሜ","ም","ሞ"]},
+    {t:"sa2", c:"s", f:["ሠ","ሡ","ሢ","ሣ","ሤ","ሥ","ሦ"]},
+    {t:"ra", c:"r", f:["ረ","ሩ","ሪ","ራ","ሬ","ር","ሮ"]},
+    {t:"sa", c:"s", f:["ሰ","ሱ","ሲ","ሳ","ሴ","ስ","ሶ"]},
+    {t:"sha", c:"sh", f:["ሸ","ሹ","ሺ","ሻ","ሼ","ሽ","ሾ"]},
+    {t:"qa", c:"q", f:["ቀ","ቁ","ቂ","ቃ","ቄ","ቅ","ቆ"]},
+    {t:"ba", c:"b", f:["በ","ቡ","ቢ","ባ","ቤ","ብ","ቦ"]},
+    {t:"va", c:"v", f:["ቨ","ቩ","ቪ","ቫ","ቬ","ቭ","ቮ"]},
+    {t:"ta", c:"t", f:["ተ","ቱ","ቲ","ታ","ቴ","ት","ቶ"]},
+    {t:"cha", c:"ch", f:["ቸ","ቹ","ቺ","ቻ","ቼ","ች","ቾ"]},
+    {t:"hha3", c:"h", f:["ኀ","ኁ","ኂ","ኃ","ኄ","ኅ","ኆ"]},
+    {t:"na", c:"n", f:["ነ","ኑ","ኒ","ና","ኔ","ን","ኖ"]},
+    {t:"nya", c:"ny", f:["ኘ","ኙ","ኚ","ኛ","ኜ","ኝ","ኞ"]},
+    {t:"a", c:"", f:["አ","ኡ","ኢ","ኣ","ኤ","እ","ኦ"]},
+    {t:"ka", c:"k", f:["ከ","ኩ","ኪ","ካ","ኬ","ክ","ኮ"]},
+    {t:"kha", c:"kh", f:["ኸ","ኹ","ኺ","ኻ","ኼ","ኽ","ኾ"]},
+    {t:"wa", c:"w", f:["ወ","ዉ","ዊ","ዋ","ዌ","ው","ዎ"]},
+    {t:"a2", c:"", f:["ዐ","ዑ","ዒ","ዓ","ዔ","ዕ","ዖ"]},
+    {t:"za", c:"z", f:["ዘ","ዙ","ዚ","ዛ","ዜ","ዝ","ዞ"]},
+    {t:"zha", c:"zh", f:["ዠ","ዡ","ዢ","ዣ","ዤ","ዥ","ዦ"]},
+    {t:"ya", c:"y", f:["የ","ዩ","ዪ","ያ","ዬ","ይ","ዮ"]},
+    {t:"da", c:"d", f:["ደ","ዱ","ዲ","ዳ","ዴ","ድ","ዶ"]},
+    {t:"ja", c:"j", f:["ጀ","ጁ","ጂ","ጃ","ጄ","ጅ","ጆ"]},
+    {t:"ga", c:"g", f:["ገ","ጉ","ጊ","ጋ","ጌ","ግ","ጎ"]},
+    {t:"tha", c:"t", f:["ጠ","ጡ","ጢ","ጣ","ጤ","ጥ","ጦ"]},
+    {t:"cha2", c:"ch", f:["ጨ","ጩ","ጪ","ጫ","ጬ","ጭ","ጮ"]},
+    {t:"pha2", c:"p", f:["ጰ","ጱ","ጲ","ጳ","ጴ","ጵ","ጶ"]},
+    {t:"tsa", c:"ts", f:["ጸ","ጹ","ጺ","ጻ","ጼ","ጽ","ጾ"]},
+    {t:"tsa2", c:"ts", f:["ፀ","ፁ","ፂ","ፃ","ፄ","ፅ","ፆ"]},
+    {t:"fa", c:"f", f:["ፈ","ፉ","ፊ","ፋ","ፌ","ፍ","ፎ"]},
+    {t:"pa", c:"p", f:["ፐ","ፑ","ፒ","ፓ","ፔ","ፕ","ፖ"]}
+  ];
+  var ORDER_LABELS = ["አ","ኡ","ኢ","ኣ","ኤ","እ","ኦ"];
+  var ORDER_IPA = ["ä","u","i","a","e","ə","o"];
+  var ORDER_SUFFIX = ["a","u","i","aa","e","uh","o"];
+  var TIPS = [
+    "This is the plain, base form of the letter — no extra marks added yet. Get comfortable with this shape first; every other form in the row builds on it.",
+    "Look for a small hook or mark added to the right side of the letter — that's the tell for the \u2018u\u2019 sound. A couple of letters (ሩ, ፉ) tuck that mark underneath instead.",
+    "The \u2018i\u2019 form usually adds a short tick pointing right off the end of the main leg. Three letters skip it: ሪ, ዪ, and ፊ.",
+    "For letters with two or more legs, the leftmost leg gets noticeably shorter — that shortened leg is the tell for the \u2018a\u2019 sound.",
+    "This form adds a small loop or ring on the right leg. Once you can spot that loop, you can read this whole column at a glance.",
+    "No vowel mark here — this is the bare consonant sound on its own, used when a word needs just the consonant with no vowel attached.",
+    "The \u2018o\u2019 sound shows up as a ring: on the right leg for multi-leg letters, on the shortest leg for two-legged ones, or sitting on top for single-leg letters. Round your lips as you say it."
+  ];
+
+  // ================================================================================
+  // 🔊 AUDIO FILE HOOK — replace text-to-speech with real recordings here
+  // ================================================================================
+  // Right now the "hear it" button uses the browser's built-in text-to-speech
+  // (see speakCurrent(), search for "AUDIO FILE HOOK" again below) — there are
+  // no actual audio files yet, just synthesized/approximated speech.
+  //
+  // To swap in a real recording later, you only need to touch data, not logic:
+  //
+  //   • For a WORD: add an "audio" property to that word's entry in the WORDS
+  //     array right below, e.g. the ቡና/buna entry becomes:
+  //         {word:"ቡና", translit:"buna", en:"coffee", audio:"audio/buna.mp3"}
+  //
+  //   • For a single LETTER: add its file path to AUDIO_OVERRIDES right below,
+  //     keyed by the exact Ethiopic character, e.g.:
+  //         AUDIO_OVERRIDES["ሀ"] = "audio/ha.mp3";
+  //
+  // speakCurrent() already checks for these first and plays the file directly
+  // if present, falling back to text-to-speech only when no file is set — so
+  // no other code changes are needed as you fill these in.
+  // ================================================================================
+  var AUDIO_OVERRIDES = {
+    // "ሀ": "audio/ha.mp3",
+    // "ለ": "audio/le.mp3",
+  };
+
+  // one example word per specific character (34 families x 7 vowel orders).
+  // many specific vowel-order forms genuinely have no common word that
+  // starts with them in modern Amharic — those are flagged rare:true
+  // rather than guessing, consistent with what Amharic-teaching sources note.
+  // add audio:"path/to/file.mp3" to any entry below to attach a real recording.
+  var WORDS = [
+    [ {word:"ሀገር",translit:"hager",en:"country"}, {word:"ሁሉ",translit:"hulu",en:"all, everyone"}, {rare:true}, {word:"ሃሳብ",translit:"hasab",en:"idea, thought"}, {word:"ሄደ",translit:"hede",en:"went (he/she went)"}, {word:"ህልም",translit:"hilm",en:"dream"}, {word:"ሆድ",translit:"hod",en:"stomach, belly"} ],
+    [ {word:"ለምን",translit:"lemin",en:"why"}, {word:"ሉል",translit:"lul",en:"pearl"}, {word:"ሊቅ",translit:"liq",en:"scholar, expert"}, {word:"ላም",translit:"lam",en:"cow"}, {word:"ሌባ",translit:"leba",en:"thief"}, {word:"ልጅ",translit:"lij",en:"child"}, {word:"ሎሚ",translit:"lomi",en:"lemon"} ],
+    [ {word:"ሐኪም",translit:"hakim",en:"doctor"}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {word:"ሕግ",translit:"higg",en:"law"}, {rare:true} ],
+    [ {word:"መጽሐፍ",translit:"metsihaf",en:"book"}, {word:"ሙሉ",translit:"mulu",en:"full, complete"}, {word:"ሚስት",translit:"mist",en:"wife"}, {word:"ማር",translit:"mar",en:"honey"}, {word:"ሜዳ",translit:"meda",en:"field, plain"}, {word:"ምግብ",translit:"migib",en:"food"}, {word:"ሞት",translit:"mot",en:"death"} ],
+    [ {word:"ሠራተኛ",translit:"serategna",en:"worker"}, {rare:true}, {rare:true}, {word:"ሣር",translit:"sar",en:"grass"}, {rare:true}, {word:"ሥራ",translit:"sira",en:"work, job"}, {rare:true} ],
+    [ {word:"ረዥም",translit:"rezhim",en:"tall, long"}, {word:"ሩዝ",translit:"ruz",en:"rice"}, {word:"ሪከርድ",translit:"rekord",en:"record (a sports world record)"}, {word:"ራስ",translit:"ras",en:"head"}, {rare:true}, {word:"ርቀት",translit:"rikat",en:"distance"}, {word:"ሮጠ",translit:"rot'e",en:"ran (he/she ran)"} ],
+    [ {word:"ሰላም",translit:"selam",en:"peace, hello"}, {word:"ሱቅ",translit:"suq",en:"shop, store"}, {rare:true}, {word:"ሳምንት",translit:"samint",en:"week"}, {word:"ሴት",translit:"set",en:"woman"}, {word:"ስም",translit:"sim",en:"name"}, {word:"ሶስት",translit:"sost",en:"three"} ],
+    [ {word:"ሸሚዝ",translit:"shemiz",en:"shirt"}, {word:"ሹም",translit:"shum",en:"official, chief"}, {word:"ሺህ",translit:"shih",en:"thousand"}, {word:"ሻይ",translit:"shai",en:"tea"}, {rare:true}, {word:"ሽንኩርት",translit:"shinkurt",en:"onion"}, {word:"ሾት",translit:"shot",en:"shot (a shot on goal in football)"} ],
+    [ {word:"ቀለም",translit:"qelem",en:"color, ink"}, {word:"ቁርስ",translit:"qurs",en:"breakfast"}, {rare:true}, {word:"ቃል",translit:"qal",en:"word, promise"}, {word:"ቄስ",translit:"qes",en:"priest"}, {word:"ቅዳሜ",translit:"qidame",en:"Saturday"}, {word:"ቆንጆ",translit:"qonjo",en:"beautiful, pretty"} ],
+    [ {word:"በር",translit:"ber",en:"door"}, {word:"ቡና",translit:"buna",en:"coffee"}, {word:"ቢራ",translit:"bira",en:"beer"}, {word:"ባህር",translit:"bahir",en:"sea, ocean"}, {word:"ቤት",translit:"bet",en:"house"}, {word:"ብር",translit:"bir",en:"birr (Ethiopian currency)"}, {word:"ቦታ",translit:"bota",en:"place, location"} ],
+    [ {rare:true}, {rare:true}, {rare:true}, {word:"ቫሌቦል",translit:"valebol",en:"volleyball (a sport)"}, {rare:true}, {rare:true}, {rare:true} ],
+    [ {word:"ተማሪ",translit:"temari",en:"student"}, {word:"ቱታ",translit:"tuta",en:"tracksuit, jumpsuit (sportswear)"}, {rare:true}, {word:"ታዳሚ",translit:"tadami",en:"spectator, audience"}, {word:"ቴክኒክ",translit:"teknik",en:"technique (a player's skill)"}, {word:"ትምህርት",translit:"timhirt",en:"education, lesson"}, {word:"ቶሎ",translit:"tolo",en:"quickly, fast"} ],
+    [ {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {word:"ችግር",translit:"chigir",en:"problem"}, {rare:true} ],
+    [ {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true} ],
+    [ {word:"ነገር",translit:"neger",en:"thing, matter"}, {rare:true}, {rare:true}, {word:"ናፍቆት",translit:"nafqot",en:"longing, nostalgia"}, {rare:true}, {word:"ንፋስ",translit:"nifas",en:"wind"}, {rare:true} ],
+    [ {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true} ],
+    [ {word:"አበባ",translit:"abeba",en:"flower"}, {rare:true}, {word:"ኢትዮጵያ",translit:"ityop'ya",en:"Ethiopia (the country)"}, {rare:true}, {rare:true}, {word:"እናት",translit:"inat",en:"mother"}, {rare:true} ],
+    [ {word:"ከተማ",translit:"ketema",en:"city, town"}, {rare:true}, {word:"ኪስ",translit:"kis",en:"pocket"}, {word:"ካርታ",translit:"karta",en:"map"}, {word:"ኬንያ",translit:"kenya",en:"Kenya (Ethiopia's rival in distance running)"}, {word:"ክፍል",translit:"kifl",en:"room, class"}, {word:"ኮረብታ",translit:"korebta",en:"hill"} ],
+    [ {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true} ],
+    [ {word:"ወር",translit:"wer",en:"month"}, {rare:true}, {rare:true}, {word:"ዋጋ",translit:"waga",en:"price, value"}, {rare:true}, {word:"ውሃ",translit:"wiha",en:"water"}, {rare:true} ],
+    [ {rare:true}, {rare:true}, {rare:true}, {word:"ዓመት",translit:"amet",en:"year"}, {rare:true}, {word:"ዕድል",translit:"idil",en:"luck, chance"}, {rare:true} ],
+    [ {word:"ዘመድ",translit:"zemed",en:"relative (family member)"}, {rare:true}, {rare:true}, {word:"ዛፍ",translit:"zaf",en:"tree"}, {word:"ዜማ",translit:"zema",en:"melody, tune"}, {word:"ዝናብ",translit:"zinab",en:"rain"}, {rare:true} ],
+    [ {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true} ],
+    [ {word:"የ",translit:"ye",en:"\u2018of\u2019 (a possessive marker)"}, {word:"ዩኒፎርም",translit:"yuniform",en:"uniform, jersey (worn by a sports team)"}, {rare:true}, {word:"ያዘ",translit:"yaze",en:"held, caught"}, {rare:true}, {word:"ይቅርታ",translit:"yikirta",en:"sorry, excuse me"}, {rare:true} ],
+    [ {word:"ደብተር",translit:"debter",en:"notebook"}, {rare:true}, {rare:true}, {word:"ዳቦ",translit:"dabo",en:"bread"}, {rare:true}, {word:"ድምጽ",translit:"dimts",en:"voice, sound"}, {word:"ዶሮ",translit:"doro",en:"chicken"} ],
+    [ {word:"ጀመረ",translit:"jemere",en:"began, started"}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {word:"ጅብ",translit:"jib",en:"hyena"}, {word:"ጆሮ",translit:"joro",en:"ear"} ],
+    [ {word:"ገበያ",translit:"gebeya",en:"market"}, {word:"ጉዞ",translit:"guzo",en:"journey, trip"}, {rare:true}, {word:"ጋሪ",translit:"gari",en:"cart"}, {rare:true}, {word:"ግጥም",translit:"gitim",en:"poem"}, {word:"ጎረቤት",translit:"gorebet",en:"neighbor"} ],
+    [ {word:"ጠጅ",translit:"tej",en:"honey wine"}, {word:"ጡንቻ",translit:"tuncha",en:"muscle"}, {rare:true}, {word:"ጣት",translit:"tat",en:"finger"}, {word:"ጤና",translit:"tena",en:"health"}, {word:"ጥያቄ",translit:"t'iyaqe",en:"question"}, {word:"ጦር",translit:"tor",en:"spear, military"} ],
+    [ {word:"ጨው",translit:"chew",en:"salt"}, {rare:true}, {rare:true}, {word:"ጫማ",translit:"chama",en:"shoe"}, {rare:true}, {word:"ጭስ",translit:"chis",en:"smoke"}, {rare:true} ],
+    [ {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true} ],
+    [ {word:"ጸሎት",translit:"tselot",en:"prayer"}, {rare:true}, {word:"ጺም",translit:"tsim",en:"beard"}, {word:"ጻድቅ",translit:"tsadiq",en:"righteous, saint"}, {rare:true}, {word:"ጽሑፍ",translit:"tsihuf",en:"writing, document"}, {word:"ጾም",translit:"tsom",en:"fasting"} ],
+    [ {word:"ፀሐይ",translit:"tsehay",en:"sun"}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true}, {rare:true} ],
+    [ {word:"ፈረስ",translit:"feres",en:"horse"}, {rare:true}, {word:"ፊት",translit:"fit",en:"face"}, {rare:true}, {rare:true}, {word:"ፍቅር",translit:"fikir",en:"love"}, {word:"ፎርሜሽን",translit:"formeshen",en:"formation (a team's playing formation)"} ],
+    [ {rare:true}, {rare:true}, {word:"ፒናልቲ",translit:"penalti",en:"penalty (a penalty kick in football)"}, {word:"ፓስ",translit:"pas",en:"pass (a pass in football)"}, {rare:true}, {rare:true}, {rare:true} ]
+  ];
+
+  // flat list of every confident (non-rare) word, for word mode's picker
+  var WORD_LIST = [];
+  WORDS.forEach(function(row){
+    row.forEach(function(entry){
+      if(!entry.rare) WORD_LIST.push(entry);
+    });
+  });
+
+  // ---------- state ----------
+  var state = {
+    weight:0.55, wetness:0.42, speed:0.38, formality:0.88, seed:7,
+    surface:"plain", mode:"write", pageMode:"letters",
+    familyIndex:0, order:1,
+    currentChar:"ሀ", wordEntry:null
+  };
+  var strokes = [];
+  var liveStroke = null;
+  var drawing = false;
+  var lastReplayTimer = null;
+  var visitedFamilies = new Set();
+
+  // ---------- canvas setup ----------
+  var canvas = document.getElementById("inkCanvas");
+  var ctx = canvas.getContext("2d");
+  var BASE_W = 760, BASE_H = 520;
+  var dpr = Math.max(1, window.devicePixelRatio || 1);
+
+  function sizeCanvas(){
+    canvas.width = BASE_W * dpr;
+    canvas.height = BASE_H * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    renderAll();
+  }
+
+  function getPos(evt){
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = BASE_W / rect.width;
+    var scaleY = BASE_H / rect.height;
+    return {
+      x: (evt.clientX - rect.left) * scaleX,
+      y: (evt.clientY - rect.top) * scaleY
+    };
+  }
+
+  // ---------- seeded random ----------
+  function mulberry32(a){
+    return function(){
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // ---------- surface ----------
+  function drawSurface(){
+    ctx.fillStyle = "#FBF9F3";
+    ctx.fillRect(0,0,BASE_W,BASE_H);
+
+    if(state.surface === "grid"){
+      var margin = 50;
+      var s = Math.min(BASE_W, BASE_H) - margin*2;
+      var x0 = (BASE_W - s)/2, y0 = (BASE_H - s)/2;
+      ctx.strokeStyle = "rgba(60,60,60,0.14)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x0,y0,s,s);
+      ctx.beginPath();
+      ctx.moveTo(x0+s/2, y0); ctx.lineTo(x0+s/2, y0+s);
+      ctx.moveTo(x0, y0+s/2); ctx.lineTo(x0+s, y0+s/2);
+      ctx.setLineDash([3,4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(x0,y0); ctx.lineTo(x0+s,y0+s);
+      ctx.moveTo(x0+s,y0); ctx.lineTo(x0,y0+s);
+      ctx.strokeStyle = "rgba(60,60,60,0.06)";
+      ctx.stroke();
+    } else if(state.surface === "scroll"){
+      ctx.strokeStyle = "rgba(60,60,60,0.16)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(46, 80); ctx.lineTo(BASE_W-46, 80);
+      ctx.moveTo(46, BASE_H-80); ctx.lineTo(BASE_W-46, BASE_H-80);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(60,60,60,0.08)";
+      ctx.beginPath();
+      ctx.moveTo(46,80); ctx.lineTo(46,BASE_H-80);
+      ctx.moveTo(BASE_W-46,80); ctx.lineTo(BASE_W-46,BASE_H-80);
+      ctx.stroke();
+    }
+  }
+
+  function guideFontPx(text){
+    var len = Array.from(text).length;
+    return len<=1 ? 300 : Math.max(70, Math.min(260, 620/len));
+  }
+  function drawGuideGlyph(){
+    if(state.mode !== "trace") return;
+    ctx.save();
+    var text = state.currentChar;
+    var fontPx = guideFontPx(text);
+    ctx.font = fontPx + "px 'Noto Sans Ethiopic', serif";
+    ctx.fillStyle = "rgba(60,60,60,0.16)";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, BASE_W/2, BASE_H/2 + 8);
+    ctx.restore();
+  }
+
+  // ---------- ink rendering ----------
+  function smoothPath(points, formality){
+    if(points.length < 3) return points.slice();
+    var out = [];
+    var subdiv = 6;
+    for(var i=0;i<points.length-1;i++){
+      var p0 = points[i>0?i-1:i];
+      var p1 = points[i];
+      var p2 = points[i+1];
+      var p3 = points[i+2<points.length?i+2:i+1];
+      for(var t=0;t<subdiv;t++){
+        var f = t/subdiv;
+        var x = catmullRom(p0.x,p1.x,p2.x,p3.x,f);
+        var y = catmullRom(p0.y,p1.y,p2.y,p3.y,f);
+        out.push({x:x,y:y,t:p1.t});
+      }
+    }
+    out.push(points[points.length-1]);
+    return out;
+  }
+  function catmullRom(p0,p1,p2,p3,t){
+    var t2=t*t, t3=t2*t;
+    return 0.5*((2*p1) + (-p0+p2)*t + (2*p0-5*p1+4*p2-p3)*t2 + (-p0+3*p1-3*p2+p3)*t3);
+  }
+
+  function renderStroke(strokeObj){
+    var pts = strokeObj.points;
+    if(pts.length < 2) return;
+    var st = strokeObj.style;
+    var rand = mulberry32(st.seed * 1000 + pts.length);
+    var jitter = (1 - st.formality) * 6;
+    var smoothed = smoothPath(pts, st.formality);
+
+    var jittered = smoothed.map(function(p){
+      return {
+        x: p.x + (rand()-0.5)*jitter,
+        y: p.y + (rand()-0.5)*jitter,
+        t: p.t
+      };
+    });
+
+    var baseWidth = 4 + st.weight * 26;
+
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "rgba(20,18,15,0.92)";
+
+    for(var i=1;i<jittered.length;i++){
+      var a = jittered[i-1], b = jittered[i];
+      var dt = Math.max(1, (b.t||0) - (a.t||0));
+      var dist = Math.hypot(b.x-a.x, b.y-a.y);
+      var vel = dist/dt;
+      var speedFactor = 1 - Math.min(0.6, vel * st.speed * 2.2);
+      var w = baseWidth * Math.max(0.35, speedFactor);
+      ctx.lineWidth = w;
+      ctx.beginPath();
+      ctx.moveTo(a.x,a.y);
+      ctx.lineTo(b.x,b.y);
+      ctx.stroke();
+    }
+
+    if(st.wetness > 0.05){
+      var step = Math.max(4, Math.floor(14 - st.wetness*10));
+      for(var i2=0;i2<jittered.length;i2+=step){
+        if(rand() > st.wetness*0.9) continue;
+        var p = jittered[i2];
+        var r = (3 + rand()*6) * (0.5 + st.wetness) * (0.6+st.weight);
+        var grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
+        grad.addColorStop(0, "rgba(20,18,15,"+(0.16*st.wetness+0.05)+")");
+        grad.addColorStop(1, "rgba(20,18,15,0)");
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,r,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    var end = jittered[jittered.length-1];
+    var prev = jittered[Math.max(0,jittered.length-3)];
+    var ang = Math.atan2(end.y-prev.y, end.x-prev.x);
+    var hairs = 2 + Math.round(st.wetness*3);
+    for(var h=0; h<hairs; h++){
+      var spread = (rand()-0.5)*1.1;
+      var len = (6 + rand()*18) * (0.4+st.wetness);
+      var hx = end.x + Math.cos(ang+spread)*len;
+      var hy = end.y + Math.sin(ang+spread)*len;
+      ctx.strokeStyle = "rgba(20,18,15,"+(0.12+rand()*0.1)+")";
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(end.x,end.y);
+      ctx.quadraticCurveTo((end.x+hx)/2, (end.y+hy)/2 + (rand()-0.5)*6, hx, hy);
+      ctx.stroke();
+    }
+  }
+
+  function currentStyle(){
+    return {
+      weight: state.weight, wetness: state.wetness,
+      speed: state.speed, formality: state.formality,
+      seed: state.seed
+    };
+  }
+
+  function renderAll(){
+    drawSurface();
+    drawGuideGlyph();
+    strokes.forEach(renderStroke);
+    if(liveStroke) renderStroke(liveStroke);
+  }
+
+  // ---------- grading ----------
+  function renderTargetMask(){
+    var c = document.createElement("canvas");
+    c.width = BASE_W; c.height = BASE_H;
+    var tctx = c.getContext("2d");
+    var text = state.currentChar;
+    var fontPx = guideFontPx(text);
+    tctx.font = fontPx + "px 'Noto Sans Ethiopic', serif";
+    tctx.fillStyle = "#000";
+    tctx.textAlign = "center";
+    tctx.textBaseline = "middle";
+    tctx.fillText(text, BASE_W/2, BASE_H/2 + 8);
+    return tctx.getImageData(0, 0, BASE_W, BASE_H);
+  }
+
+  function renderInkMask(){
+    var c = document.createElement("canvas");
+    c.width = BASE_W; c.height = BASE_H;
+    var ictx = c.getContext("2d");
+    ictx.lineCap = "round";
+    ictx.lineJoin = "round";
+    ictx.strokeStyle = "#000";
+    strokes.forEach(function(strokeObj){
+      var pts = strokeObj.points;
+      if(pts.length < 2) return;
+      var smoothed = smoothPath(pts, 1);
+      var w = Math.max(6, 4 + (strokeObj.style.weight || 0.55) * 26);
+      ictx.lineWidth = w;
+      ictx.beginPath();
+      ictx.moveTo(smoothed[0].x, smoothed[0].y);
+      for(var i=1;i<smoothed.length;i++){ ictx.lineTo(smoothed[i].x, smoothed[i].y); }
+      ictx.stroke();
+    });
+    return ictx.getImageData(0, 0, BASE_W, BASE_H);
+  }
+
+  function sampleGrid(imgData, cols, rows){
+    var cellW = BASE_W/cols, cellH = BASE_H/rows;
+    var data = imgData.data;
+    var grid = new Array(cols*rows).fill(false);
+    for(var gy=0; gy<rows; gy++){
+      for(var gx=0; gx<cols; gx++){
+        var x0 = Math.floor(gx*cellW), x1 = Math.floor((gx+1)*cellW);
+        var y0 = Math.floor(gy*cellH), y1 = Math.floor((gy+1)*cellH);
+        var on = 0, total = 0;
+        for(var y=y0; y<y1; y+=2){
+          for(var x=x0; x<x1; x+=2){
+            total++;
+            if(data[(y*BASE_W+x)*4+3] > 40) on++;
+          }
+        }
+        grid[gy*cols+gx] = total>0 && (on/total) > 0.12;
+      }
+    }
+    return grid;
+  }
+
+  function gridIoU(a, b){
+    var inter=0, union=0;
+    for(var i=0;i<a.length;i++){
+      if(a[i] || b[i]) union++;
+      if(a[i] && b[i]) inter++;
+    }
+    return union===0 ? 0 : inter/union;
+  }
+
+  function computeGrade(){
+    var targetGrid = sampleGrid(renderTargetMask(), 40, 28);
+    var inkGrid = sampleGrid(renderInkMask(), 40, 28);
+    var iou = gridIoU(targetGrid, inkGrid);
+    var stars;
+    if(iou >= 0.55) stars = 5;
+    else if(iou >= 0.40) stars = 4;
+    else if(iou >= 0.25) stars = 3;
+    else if(iou >= 0.12) stars = 2;
+    else stars = 1;
+    return {stars:stars, iou:iou};
+  }
+
+  var GRADE_MESSAGES = {
+    1: "✏️ Try again — take your time tracing the shape.",
+    2: "💪 Try again — you're getting closer!",
+    3: "👍 Nice! You're capturing the shape.",
+    4: "🌟 Great job! Really close to the real thing.",
+    5: "🎉 Perfect! That's beautifully written."
+  };
+
+  function showGradeResult(starsCount, message){
+    var box = document.getElementById("gradeResult");
+    box.innerHTML = "";
+    if(starsCount !== null){
+      var starsSpan = document.createElement("span");
+      starsSpan.className = "grade-stars";
+      starsSpan.textContent = "\u2605".repeat(starsCount) + "\u2606".repeat(5-starsCount);
+      box.appendChild(starsSpan);
+    }
+    var msgSpan = document.createElement("span");
+    msgSpan.className = "grade-message";
+    msgSpan.textContent = message;
+    box.appendChild(msgSpan);
+  }
+
+  function clearGradeResult(){
+    document.getElementById("gradeResult").innerHTML = "";
+  }
+
+  document.getElementById("gradeBtn").addEventListener("click", function(){
+    if(strokes.length === 0){
+      showGradeResult(null, "Draw the letter first, then tap grade!");
+      return;
+    }
+    var g = computeGrade();
+    showGradeResult(g.stars, GRADE_MESSAGES[g.stars]);
+  });
+
+  // ---------- pointer handling ----------
+  canvas.addEventListener("pointerdown", function(e){
+    e.preventDefault();
+    drawing = true;
+    canvas.setPointerCapture(e.pointerId);
+    var p = getPos(e);
+    liveStroke = { points:[{x:p.x,y:p.y,t:performance.now()}], style: currentStyle() };
+    renderAll();
+  });
+  canvas.addEventListener("pointermove", function(e){
+    if(!drawing || !liveStroke) return;
+    e.preventDefault();
+    var p = getPos(e);
+    liveStroke.points.push({x:p.x,y:p.y,t:performance.now()});
+    renderAll();
+  });
+  // Belt-and-suspenders: some mobile browsers still try to scroll on a
+  // touchmove even when touch-action is set, unless it's also blocked here.
+  canvas.addEventListener("touchstart", function(e){ e.preventDefault(); }, {passive:false});
+  canvas.addEventListener("touchmove", function(e){ e.preventDefault(); }, {passive:false});
+  function endStroke(){
+    if(!drawing) return;
+    drawing = false;
+    if(liveStroke && liveStroke.points.length > 1){
+      strokes.push(liveStroke);
+    }
+    liveStroke = null;
+    renderAll();
+    updateStrokeCount();
+  }
+  canvas.addEventListener("pointerup", endStroke);
+  canvas.addEventListener("pointerleave", endStroke);
+  canvas.addEventListener("pointercancel", endStroke);
+
+  // ---------- controls ----------
+  function bindSlider(id, key){
+    var el = document.getElementById(id);
+    var out = document.getElementById(id+"Val");
+    el.addEventListener("input", function(){
+      state[key] = parseFloat(el.value);
+      out.textContent = key==="seed" ? el.value : parseFloat(el.value).toFixed(2);
+    });
+  }
+  bindSlider("weight","weight");
+  bindSlider("wetness","wetness");
+  bindSlider("speed","speed");
+  bindSlider("formality","formality");
+  bindSlider("seed","seed");
+
+  function bindTabs(id, key){
+    var group = document.getElementById(id);
+    group.querySelectorAll("button").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        group.querySelectorAll("button").forEach(function(b){ b.classList.remove("active"); });
+        btn.classList.add("active");
+        state[key] = btn.getAttribute("data-v");
+        renderAll();
+      });
+    });
+  }
+  bindTabs("surfaceTabs","surface");
+  bindTabs("modeTabs","mode");
+
+  document.getElementById("settingsToggle").addEventListener("click", function(){
+    var body = document.getElementById("settingsBody");
+    var chevron = document.getElementById("settingsChevron");
+    var open = body.classList.toggle("open");
+    chevron.textContent = open ? "▴" : "▾";
+  });
+
+  document.getElementById("undoBtn").addEventListener("click", function(){
+    strokes.pop();
+    renderAll();
+    updateStrokeCount();
+    clearGradeResult();
+  });
+  document.getElementById("clearBtn").addEventListener("click", function(){
+    strokes = [];
+    renderAll();
+    updateStrokeCount();
+    clearGradeResult();
+  });
+
+  document.getElementById("replayBtn").addEventListener("click", function(){
+    if(lastReplayTimer) return;
+    var snapshot = strokes.slice();
+    var i = 0;
+    strokes = [];
+    renderAll();
+    function step(){
+      if(i >= snapshot.length){ lastReplayTimer = null; return; }
+      strokes.push(snapshot[i]);
+      renderAll();
+      i++;
+      lastReplayTimer = setTimeout(step, 420);
+    }
+    step();
+  });
+
+  function updateStrokeCount(){
+    var n = strokes.length;
+    document.getElementById("strokeCount").textContent = n + (n===1 ? " stroke" : " strokes");
+    document.getElementById("hintRow").textContent = n > 0 ? ("you've drawn " + n + (n===1?" stroke":" strokes") + " so far — replay to watch it back.") : "";
+  }
+
+  // ---------- sound ----------
+  var synth = window.speechSynthesis;
+  var voicesCache = [];
+  function refreshVoices(){
+    voicesCache = synth ? synth.getVoices() : [];
+  }
+  if(synth){
+    refreshVoices();
+    synth.onvoiceschanged = refreshVoices;
+  }
+  function findAmharicVoice(){
+    for(var i=0;i<voicesCache.length;i++){
+      var v = voicesCache[i];
+      if(/^am(-|_|$)/i.test(v.lang) || /amharic/i.test(v.name)) return v;
+    }
+    return null;
+  }
+  function speakCurrent(){
+    var status = document.getElementById("soundStatus");
+
+    // ---- AUDIO FILE HOOK: a real recording (if one has been added above) ----
+    // ---- always takes priority over text-to-speech.                     ----
+    var fileUrl = (state.wordEntry && state.wordEntry.audio) || AUDIO_OVERRIDES[state.currentChar];
+    if(fileUrl){
+      var audioEl = new Audio(fileUrl);
+      audioEl.play();
+      status.textContent = "playing recorded audio";
+      return;
+    }
+    // ---- end AUDIO FILE HOOK — everything below is the text-to-speech fallback ----
+
+    if(!synth){
+      status.textContent = "voice playback isn't supported in this browser.";
+      return;
+    }
+    synth.cancel();
+    var voice = findAmharicVoice();
+    var utter;
+    if(voice){
+      utter = new SpeechSynthesisUtterance(state.currentChar);
+      utter.voice = voice;
+      utter.lang = voice.lang;
+      utter.rate = 0.85;
+      status.textContent = "native Amharic voice";
+    } else {
+      var reading;
+      if(state.wordEntry){
+        reading = state.wordEntry.translit;
+      } else {
+        var fam = FAMILIES[state.familyIndex];
+        var matches = fam && fam.f[state.order-1] === state.currentChar;
+        reading = matches ? (fam.c || "") + ORDER_SUFFIX[state.order-1] : state.currentChar;
+      }
+      utter = new SpeechSynthesisUtterance(reading);
+      utter.lang = "en-US";
+      utter.rate = 0.8;
+      status.textContent = "approximate sound — no Amharic voice found on this device";
+    }
+    synth.speak(utter);
+  }
+  document.getElementById("soundBtn").addEventListener("click", speakCurrent);
+
+  // ---------- tips + progress ----------
+  function updateTip(){
+    document.getElementById("tipText").textContent = " " + (TIPS[state.order-1] || "");
+  }
+  function updateWordExample(){
+    var box = document.getElementById("wordExample");
+    var famWords = WORDS[state.familyIndex];
+    var entry = famWords ? famWords[state.order-1] : null;
+    box.innerHTML = "";
+    var badge = document.createElement("span");
+    badge.className = "word-badge";
+    badge.textContent = "WORD EXAMPLE";
+    box.appendChild(badge);
+    if(!entry || entry.rare){
+      box.classList.add("rare");
+      var note = document.createElement("span");
+      note.className = "word-en";
+      note.textContent = "Few common words start with this sound in modern Amharic — it shows up mostly in the middle or end of words.";
+      box.appendChild(note);
+      return;
+    }
+    box.classList.remove("rare");
+    var am = document.createElement("span");
+    am.className = "word-am";
+    am.textContent = entry.word;
+    var tr = document.createElement("span");
+    tr.className = "word-translit";
+    tr.textContent = "(" + entry.translit + ")";
+    var en = document.createElement("span");
+    en.className = "word-en";
+    en.textContent = "\u2014 \u201c" + entry.en + "\u201d";
+    box.appendChild(am);
+    box.appendChild(tr);
+    box.appendChild(en);
+  }
+  function updateProgress(chipEl){
+    var before = visitedFamilies.size;
+    visitedFamilies.add(state.familyIndex);
+    var pct = Math.round(visitedFamilies.size/FAMILIES.length*100);
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("progressLabel").textContent = visitedFamilies.size + " / " + FAMILIES.length + " letter families explored";
+    if(visitedFamilies.size > before){
+      var bar = document.getElementById("progressBar");
+      bar.classList.remove("pulse");
+      void bar.offsetWidth;
+      bar.classList.add("pulse");
+      if(chipEl){
+        chipEl.classList.remove("bounce");
+        void chipEl.offsetWidth;
+        chipEl.classList.add("bounce");
+      }
+      if(visitedFamilies.size === FAMILIES.length){
+        document.getElementById("celebrate").classList.add("show");
+      }
+    }
+  }
+
+  // ---------- character selection ----------
+  function setChar(ch, syncFamily, chipEl){
+    state.currentChar = ch;
+    state.wordEntry = null;
+    document.getElementById("titleGlyph").textContent = ch;
+    if(syncFamily !== false){
+      for(var i=0;i<FAMILIES.length;i++){
+        var idx = FAMILIES[i].f.indexOf(ch);
+        if(idx !== -1){
+          state.familyIndex = i;
+          state.order = idx+1;
+          highlightFamily();
+          highlightOrder();
+          break;
+        }
+      }
+    }
+    strokes = [];
+    renderAll();
+    updateStrokeCount();
+    clearGradeResult();
+    updateTip();
+    updateWordExample();
+    updateProgress(chipEl || familyRow.children[state.familyIndex]);
+  }
+
+  var familyRow = document.getElementById("familyRow");
+  FAMILIES.forEach(function(fam, i){
+    var chip = document.createElement("div");
+    chip.className = "chip";
+    chip.title = fam.t;
+    chip.textContent = fam.f[0];
+    chip.addEventListener("click", function(){
+      state.familyIndex = i;
+      state.order = 1;
+      highlightFamily();
+      highlightOrder();
+      setChar(fam.f[0], false, chip);
+    });
+    familyRow.appendChild(chip);
+  });
+  function highlightFamily(){
+    familyRow.querySelectorAll(".chip").forEach(function(c,i){
+      c.classList.toggle("active", i===state.familyIndex);
+      c.classList.toggle("visited", visitedFamilies.has(i));
+    });
+  }
+
+  var orderStepper = document.getElementById("orderStepper");
+  ORDER_LABELS.forEach(function(label, i){
+    var btn = document.createElement("button");
+    btn.textContent = label;
+    btn.title = "order " + (i+1) + " (" + ORDER_IPA[i] + ")";
+    btn.addEventListener("click", function(){
+      state.order = i+1;
+      highlightOrder();
+      var fam = FAMILIES[state.familyIndex];
+      setChar(fam.f[i], false);
+    });
+    orderStepper.appendChild(btn);
+  });
+  function highlightOrder(){
+    orderStepper.querySelectorAll("button").forEach(function(b,i){
+      b.classList.toggle("active", i===(state.order-1));
+    });
+  }
+
+  // ---------- word mode ----------
+  var wordGrid = document.getElementById("wordGrid");
+  WORD_LIST.forEach(function(entry){
+    var chip = document.createElement("div");
+    chip.className = "word-chip";
+    var am = document.createElement("span");
+    am.className = "wc-am";
+    am.textContent = entry.word;
+    var en = document.createElement("span");
+    en.className = "wc-en";
+    en.textContent = entry.en.split(",")[0].split("(")[0].trim();
+    chip.appendChild(am);
+    chip.appendChild(en);
+    chip.addEventListener("click", function(){ setWord(entry, chip); });
+    wordGrid.appendChild(chip);
+  });
+  function highlightWordChip(activeChip){
+    wordGrid.querySelectorAll(".word-chip").forEach(function(c){
+      c.classList.toggle("active", c===activeChip);
+    });
+  }
+
+  function setWord(entry, chipEl){
+    state.wordEntry = entry;
+    state.currentChar = entry.word;
+    document.getElementById("titleGlyph").textContent = entry.word;
+    highlightWordChip(chipEl);
+    strokes = [];
+    renderAll();
+    updateStrokeCount();
+    clearGradeResult();
+    updateWordInfo(entry);
+  }
+
+  function updateWordInfo(entry){
+    document.getElementById("wordMeaningText").textContent =
+      " (" + entry.translit + ") \u2014 \u201c" + entry.en + "\u201d";
+    var breakdown = document.getElementById("wordBreakdown");
+    breakdown.innerHTML = "";
+    var label = document.createElement("span");
+    label.className = "wb-label";
+    label.textContent = "spelled:";
+    breakdown.appendChild(label);
+    var chars = Array.from(entry.word);
+    var readable = chars.map(function(ch){
+      for(var i=0;i<FAMILIES.length;i++){
+        var idx = FAMILIES[i].f.indexOf(ch);
+        if(idx !== -1) return ch + " (" + (FAMILIES[i].c || "") + ORDER_IPA[idx] + ")";
+      }
+      return ch;
+    });
+    var val = document.createElement("span");
+    val.textContent = " " + readable.join("  +  ");
+    breakdown.appendChild(val);
+  }
+
+  document.getElementById("modeSwitch").querySelectorAll("button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.getElementById("modeSwitch").querySelectorAll("button").forEach(function(b){
+        b.classList.remove("active");
+      });
+      btn.classList.add("active");
+      state.pageMode = btn.getAttribute("data-v");
+      var isWords = state.pageMode === "words";
+      document.getElementById("letterPicker").style.display = isWords ? "none" : "";
+      document.getElementById("wordPicker").style.display = isWords ? "" : "none";
+      document.getElementById("tipCard").style.display = isWords ? "none" : "";
+      document.getElementById("wordInfoCard").style.display = isWords ? "" : "none";
+      if(isWords && !state.wordEntry && WORD_LIST.length){
+        setWord(WORD_LIST[0], wordGrid.children[0]);
+      }
+    });
+  });
+
+  // ---------- init ----------
+  highlightFamily();
+  highlightOrder();
+  window.addEventListener("resize", sizeCanvas);
+  sizeCanvas();
+  setChar("ሀ");
+})();
+</script>
+</body>
+</html>
